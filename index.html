@@ -2,20 +2,142 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FlipHelper</title>
-    <link rel="manifest" href="./manifest.webmanifest" />
-<meta name="theme-color" content="#0f172a" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>FlipHelper (versione semplice)</title>
+    <meta name="theme-color" content="#0f172a"/>
+
+    <!-- React dai CDN: niente Vite, niente build -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Compilatore JSX nel browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;
+           margin:0;background:#0f172a;color:#e2e8f0}
+      .wrap{max-width:820px;margin:32px auto;padding:16px}
+      .card{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+      h1{margin:0 0 10px;font-size:22px}
+      label{display:block;margin:12px 0 6px;font-size:14px;color:#cbd5e1}
+      input,textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid #334155;background:#0b1220;color:#e2e8f0}
+      .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      .btn{margin-top:12px;padding:12px 14px;border-radius:10px;border:0;background:#22c55e;color:#06210f;font-weight:700;cursor:pointer}
+      .muted{color:#9ca3af;font-size:12px}
+      .result{background:#0b1220;border:1px solid #1f2937;border-radius:10px;padding:14px;margin-top:14px;white-space:pre-wrap}
+    </style>
   </head>
   <body>
-    <div id="radice"></div>
-    <script type="module" src="./main.jsx"></script>
-  <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js');
-    });
-  }
-  </script>
+    <div class="wrap">
+      <div class="card">
+        <h1>FlipHelper — Annunci & Prezzo suggerito</h1>
+        <p class="muted">Versione semplice pubblicabile su GitHub Pages (senza build). 👇</p>
+
+        <div id="app">Caricamento…</div>
+      </div>
+    </div>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      function App(){
+        const [titolo, setTitolo] = useState("");
+        const [categoria, setCategoria] = useState("Abbigliamento");
+        const [condizione, setCondizione] = useState("Ottimo");
+        const [descrizione, setDescrizione] = useState("");
+        const [costo, setCosto] = useState("");
+        const [spese, setSpese] = useState("");
+        const [margine, setMargine] = useState(30);
+        const [suggerimento, setSuggerimento] = useState("");
+        const [annuncio, setAnnuncio] = useState("");
+
+        function calcolaPrezzo(){
+          const c = Number(costo) || 0;
+          const s = Number(spese) || 0;
+          const m = Number(margine)/100;
+          const piattaforma = 0.1; // stima fee 10%
+          const target = (c + s) * (1 + m) / (1 - piattaforma);
+          const prezzo = Math.max(1, Math.round(target*100)/100);
+          setSuggerimento(`Prezzo suggerito: € ${prezzo.toFixed(2)} (margine ${margine}% incluso)`);
+        }
+
+        function generaAnnuncio(){
+          const testo =
+`Titolo: ${titolo}
+
+Categoria: ${categoria} • Condizione: ${condizione}
+Descrizione: ${descrizione}
+
+Spedizione rapida 📦 | Prodotto pulito e sanificato | No perditempo ✨`;
+          setAnnuncio(testo);
+        }
+
+        function copia(t){
+          navigator.clipboard.writeText(t || "");
+        }
+
+        return (
+          <>
+            <div className="row">
+              <div>
+                <label>Titolo</label>
+                <input value={titolo} onChange={e=>setTitolo(e.target.value)} placeholder="Es. Sneakers Nike Air Max 38"/>
+              </div>
+              <div>
+                <label>Categoria</label>
+                <select value={categoria} onChange={e=>setCategoria(e.target.value)}>
+                  <option>Abbigliamento</option>
+                  <option>Sneakers</option>
+                  <option>Borse</option>
+                  <option>Elettronica</option>
+                  <option>Altro</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="row">
+              <div>
+                <label>Condizione</label>
+                <select value={condizione} onChange={e=>setCondizione(e.target.value)}>
+                  <option>Nuovo</option>
+                  <option>Come nuovo</option>
+                  <option>Ottimo</option>
+                  <option>Buono</option>
+                  <option>Usato</option>
+                </select>
+              </div>
+              <div>
+                <label>Margine desiderato (%)</label>
+                <input type="number" min="0" max="200" value={margine} onChange={e=>setMargine(e.target.value)}/>
+              </div>
+            </div>
+
+            <div className="row">
+              <div>
+                <label>Costo acquisto (€)</label>
+                <input type="number" inputMode="decimal" placeholder="0" value={costo} onChange={e=>setCosto(e.target.value)}/>
+              </div>
+              <div>
+                <label>Spese (lavaggio, riparazioni, ecc.) (€)</label>
+                <input type="number" inputMode="decimal" placeholder="0" value={spese} onChange={e=>setSpese(e.target.value)}/>
+              </div>
+            </div>
+
+            <label>Descrizione</label>
+            <textarea rows="4" value={descrizione} onChange={e=>setDescrizione(e.target.value)}
+                      placeholder="Taglia, misura, difetti, materiali, vestibilità…"></textarea>
+
+            <button className="btn" onClick={calcolaPrezzo}>Calcola prezzo</button>
+            {suggerimento && <div className="result" onClick={()=>copia(suggerimento)} title="Tocca per copiare">{suggerimento}</div>}
+
+            <button className="btn" onClick={generaAnnuncio}>Genera annuncio</button>
+            {annuncio && <div className="result" onClick={()=>copia(annuncio)} title="Tocca per copiare">{annuncio}</div>}
+
+            <p className="muted">Tocca i riquadri per copiare il testo. Questa è una versione semplificata (senza build). Poi potremo migliorare grafica e funzioni.</p>
+          </>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+    </script>
   </body>
 </html>
