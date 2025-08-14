@@ -1,23 +1,14 @@
 {
   "name": "FlipHelper",
   "short_name": "FlipHelper",
-  "start_url": "./",
-  "scope": "./",
+  "description": "Crea annunci e calcola il prezzo in un attimo.",
+  "start_url": "/FlipHelper/",
+  "scope": "/FlipHelper/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#0b1220",
+  "theme_color": "#0ea5e9",
   "icons": [
-    {
-      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAQAAABqF5pJAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABcUlEQVR42u3SMQ7CMBQF0b+S9QmJYk0qgq1vQ8M8k9Jg1QwV3m3xV2Kxw1hC8yKcYtq9+ZP8Bqx9l1wAAAAAAAAAAAAAAAAAzqzWcR1q8nq7oVgqg7h0Y2g0Jk8m0r8Qw1kEJ3h+q7Jj3t9w5Vq2JwV2vW+QmQvYv2Y0x2m7Vw3vL2o2v4U8t0m2k3f0kQ1m0a7mCkqv7o4wqk2Fh0kEw+gqYtfg3rjEJrV8dV8j6uJ2fTgQf0y9j3ZJ8W1wz/Qqk6w2jQKqX5wJQqk6w2jQKqX5wJQqk6w2jQKqX5wJQqk6w2jQKqX5wJfKqf0c7fX0w1v2m2c7n2gQfPz9n5wD2fZf+3wAAAAAAAAAAAAAAAAAAAPwBqDmq2o7kqHYAAAAASUVORK5CYII=",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAQAAAB3G0NQAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABYElEQVR42u3QMQ7CMBRF0V8m9QmJYk0qgq3fQ8N8k9Jg1QxV7nZ9s1xqMcZQt8gqjGLatf2ZvwErP2XXAAAAAAAAAAAAAAAAAADg0v1lMZ3d9bq7gVgqg3h0Y2g0Jk8m0r8Qw1kEJ3h+q7Jj3t9w5Vq2JwV2vW+QmQvYv2Y0x2m7Vw3vL2o2v4U8t0m2k3f0kQ1m0a7mCkqv7o4wqk2Fh0kEw+gqYtfg3rjEJrV8dV8j6uJ2fTgQf0y9j3ZJ8W1wz/Qqk6w2jQKqX5wJQqk6w2jQKqX5wJQqk6w2jQKqX5wJQqk6w2jQKqX5wJfKqf0c7fX0w1v2m2c7n2gQfPz9n5wD2fZf+3wAAAAAAAAAAAAAAAAAAAPwBLkq9Ywzq9iEAAAAASUVORK5CYII=",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/FlipHelper/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/FlipHelper/icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
