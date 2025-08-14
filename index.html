@@ -1,143 +1,329 @@
+
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FlipHelper (versione semplice)</title>
-    <meta name="theme-color" content="#0f172a"/>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlipHelper — Annunci & Prezzo</title>
+  <meta name="theme-color" content="#0ea5e9" />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#0e1729;
+      --muted:#91a3b0;
+      --text:#e6eef6;
+      --brand:#22c55e;
+      --brand-2:#0ea5e9;
+      --warn:#f59e0b;
+      --radius:16px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 600px at 100% -20%, rgba(14,165,233,.18), transparent 60%),
+        radial-gradient(1000px 600px at -20% 120%, rgba(34,197,94,.12), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+    .wrap{
+      max-width:940px;
+      margin-inline:auto;
+      padding:24px clamp(16px,3vw,28px) 64px;
+    }
+    header{
+      display:flex; gap:14px; align-items:center; margin-bottom:18px;
+    }
+    .logo{
+      width:44px;height:44px;display:grid;place-items:center;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--brand-2),#38bdf8);
+      box-shadow:var(--shadow);
+      font-weight:800;
+    }
+    h1{font-size:clamp(22px,4.6vw,34px); margin:0}
+    .sub{color:var(--muted); font-size:.96rem}
+    .grid{
+      display:grid; gap:14px;
+      grid-template-columns:1fr;
+    }
+    @media (min-width:880px){
+      .grid{grid-template-columns:1.2fr .9fr}
+    }
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 40%) , var(--panel);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .card h2{margin:4px 0 14px; font-size:1.1rem}
+    label{display:block; font-size:.9rem; color:#bfd3df; margin:10px 0 6px}
+    input, select, textarea{
+      width:100%;
+      background:#0b1424;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      padding:12px 14px;
+      outline:none;
+      transition:.18s border, .18s box-shadow;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:#38bdf8;
+      box-shadow:0 0 0 4px rgba(14,165,233,.18);
+    }
+    textarea{min-height:110px; resize:vertical}
+    .row{display:grid; gap:10px; grid-template-columns:1fr}
+    @media (min-width:560px){ .row{ grid-template-columns:1fr 1fr } }
 
-    <!-- React dai CDN: niente Vite, niente build -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Compilatore JSX nel browser -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    .btns{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
+    button{
+      appearance:none; border:0; cursor:pointer;
+      padding:12px 16px; border-radius:12px; font-weight:700;
+      transition:transform .05s ease, filter .15s ease;
+    }
+    .primary{background:linear-gradient(135deg,var(--brand),#16a34a); color:#06280f}
+    .ghost{background:#0b1424; color:#e8f2fa; border:1px solid rgba(255,255,255,.08)}
+    .light{background:linear-gradient(135deg,var(--brand-2),#38bdf8); color:#031320}
+    button:active{transform:translateY(1px)}
+    .muted{color:var(--muted); font-size:.9rem}
 
-    <style>
-      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;
-           margin:0;background:#0f172a;color:#e2e8f0}
-      .wrap{max-width:820px;margin:32px auto;padding:16px}
-      .card{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
-      h1{margin:0 0 10px;font-size:22px}
-      label{display:block;margin:12px 0 6px;font-size:14px;color:#cbd5e1}
-      input,textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid #334155;background:#0b1220;color:#e2e8f0}
-      .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-      .btn{margin-top:12px;padding:12px 14px;border-radius:10px;border:0;background:#22c55e;color:#06210f;font-weight:700;cursor:pointer}
-      .muted{color:#9ca3af;font-size:12px}
-      .result{background:#0b1220;border:1px solid #1f2937;border-radius:10px;padding:14px;margin-top:14px;white-space:pre-wrap}
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <div class="card">
-        <h1>FlipHelper — Annunci & Prezzo suggerito</h1>
-        <p class="muted">Versione semplice pubblicabile su GitHub Pages (senza build). 👇</p>
-
-        <div id="app">Caricamento…</div>
+    .out{
+      display:grid; gap:10px;
+    }
+    .pill{
+      display:flex; align-items:center; justify-content:space-between;
+      background:#0b1424; border:1px solid rgba(255,255,255,.08);
+      padding:12px 14px; border-radius:12px;
+    }
+    .price{ font-size:clamp(22px,5.6vw,32px); font-weight:900; letter-spacing:.3px}
+    .copy{ padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.1); background:#0e1729; color:#d6e7f3}
+    .footer{margin-top:24px; color:#9fb3c5; font-size:.85rem; text-align:center}
+    .tag{display:inline-flex; gap:6px; align-items:center; font-size:.8rem; background:#0b1424; border:1px solid rgba(255,255,255,.08); padding:6px 10px; border-radius:999px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">FH</div>
+      <div>
+        <h1>FlipHelper</h1>
+        <div class="sub">Crea l’annuncio perfetto e calcola il prezzo in 1 minuto.</div>
       </div>
+    </header>
+
+    <div class="grid">
+      <!-- Form -->
+      <section class="card">
+        <h2>Dettagli articolo</h2>
+
+        <label for="titolo">Titolo</label>
+        <input id="titolo" placeholder="Es. Sneakers Nike Air Max 37 EU"/>
+
+        <div class="row">
+          <div>
+            <label for="categoria">Categoria</label>
+            <select id="categoria">
+              <option>Abbigliamento</option>
+              <option>Scarpe</option>
+              <option>Accessori</option>
+              <option>Elettronica</option>
+              <option>Casa</option>
+              <option>Altro</option>
+            </select>
+          </div>
+          <div>
+            <label for="condizione">Condizione</label>
+            <select id="condizione">
+              <option>Ottimo</option>
+              <option>Buono</option>
+              <option>Discreto</option>
+              <option>Nuovo con etichette</option>
+              <option>Nuovo senza etichette</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="costo">Costo acquisto (€)</label>
+            <input id="costo" type="number" min="0" step="0.01" value="0" />
+          </div>
+          <div>
+            <label for="spese">Spese (lavaggio, riparazioni, ecc.) (€)</label>
+            <input id="spese" type="number" min="0" step="0.01" value="0" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="margine">Margine desiderato (%)</label>
+            <input id="margine" type="number" min="0" max="300" step="1" value="30" />
+          </div>
+          <div>
+            <label for="fee">Commissione marketplace (%)</label>
+            <input id="fee" type="number" min="0" max="50" step="0.1" value="0" />
+          </div>
+        </div>
+
+        <label for="descr">Descrizione</label>
+        <textarea id="descr" placeholder="Taglia, misure, difetti, materiali, vestibilità..."></textarea>
+
+        <div class="btns">
+          <button class="primary" id="calcola">Calcola prezzo</button>
+          <button class="light" id="genera">Genera annuncio</button>
+          <button class="ghost" id="reset">Pulisci</button>
+        </div>
+
+        <p class="muted" style="margin-top:10px">
+          Suggerimento: imposta la <b>commissione</b> se il marketplace trattiene una percentuale.
+          Per Vinted/Wallapop spesso il costo di protezione/servizio lo paga l’acquirente: puoi lasciarla a 0.
+        </p>
+      </section>
+
+      <!-- Risultati -->
+      <section class="card">
+        <h2>Risultati</h2>
+
+        <div class="out">
+          <div class="pill">
+            <div>
+              <div class="muted">Prezzo suggerito</div>
+              <div class="price" id="prezzoOut">—</div>
+            </div>
+            <button class="copy" data-copy="#prezzoOut">Copia</button>
+          </div>
+
+          <div>
+            <div class="muted" style="margin-bottom:6px">Annuncio (titolo + descrizione)</div>
+            <textarea id="annuncioOut" readonly></textarea>
+            <div class="btns" style="margin-top:8px">
+              <button class="ghost" id="copyAnnuncio">Copia testo</button>
+              <button class="ghost" id="shareAnnuncio">Condividi…</button>
+            </div>
+          </div>
+
+          <div class="muted">
+            <span class="tag" id="recap">Costi totali €0 — Margine 0%</span>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <script type="text/babel">
-      const { useState } = React;
+    <p class="footer">© FlipHelper — versione leggera per GitHub Pages. In seguito possiamo aggiungere salvataggi,
+      esportazione, immagini e tema chiaro/scuro.</p>
+  </div>
 
-      function App(){
-        const [titolo, setTitolo] = useState("");
-        const [categoria, setCategoria] = useState("Abbigliamento");
-        const [condizione, setCondizione] = useState("Ottimo");
-        const [descrizione, setDescrizione] = useState("");
-        const [costo, setCosto] = useState("");
-        const [spese, setSpese] = useState("");
-        const [margine, setMargine] = useState(30);
-        const [suggerimento, setSuggerimento] = useState("");
-        const [annuncio, setAnnuncio] = useState("");
+  <script>
+    // ------- Utility
+    const $ = s => document.querySelector(s);
+    const val = id => (document.getElementById(id).value || '').trim();
 
-        function calcolaPrezzo(){
-          const c = Number(costo) || 0;
-          const s = Number(spese) || 0;
-          const m = Number(margine)/100;
-          const piattaforma = 0.1; // stima fee 10%
-          const target = (c + s) * (1 + m) / (1 - piattaforma);
-          const prezzo = Math.max(1, Math.round(target*100)/100);
-          setSuggerimento(`Prezzo suggerito: € ${prezzo.toFixed(2)} (margine ${margine}% incluso)`);
-        }
+    const money = n => {
+      if (isNaN(n)) return '—';
+      return new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(n);
+    };
 
-        function generaAnnuncio(){
-          const testo =
-`Titolo: ${titolo}
+    // ------- Calcolo prezzo
+    function calcolaPrezzo(){
+      const costo = parseFloat(val('costo')) || 0;
+      const spese = parseFloat(val('spese')) || 0;
+      const marginPct = parseFloat(val('margine')) || 0;
+      const feePct = parseFloat(val('fee')) || 0;
 
-Categoria: ${categoria} • Condizione: ${condizione}
-Descrizione: ${descrizione}
-
-Spedizione rapida 📦 | Prodotto pulito e sanificato | No perditempo ✨`;
-          setAnnuncio(testo);
-        }
-
-        function copia(t){
-          navigator.clipboard.writeText(t || "");
-        }
-
-        return (
-          <>
-            <div className="row">
-              <div>
-                <label>Titolo</label>
-                <input value={titolo} onChange={e=>setTitolo(e.target.value)} placeholder="Es. Sneakers Nike Air Max 38"/>
-              </div>
-              <div>
-                <label>Categoria</label>
-                <select value={categoria} onChange={e=>setCategoria(e.target.value)}>
-                  <option>Abbigliamento</option>
-                  <option>Sneakers</option>
-                  <option>Borse</option>
-                  <option>Elettronica</option>
-                  <option>Altro</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="row">
-              <div>
-                <label>Condizione</label>
-                <select value={condizione} onChange={e=>setCondizione(e.target.value)}>
-                  <option>Nuovo</option>
-                  <option>Come nuovo</option>
-                  <option>Ottimo</option>
-                  <option>Buono</option>
-                  <option>Usato</option>
-                </select>
-              </div>
-              <div>
-                <label>Margine desiderato (%)</label>
-                <input type="number" min="0" max="200" value={margine} onChange={e=>setMargine(e.target.value)}/>
-              </div>
-            </div>
-
-            <div className="row">
-              <div>
-                <label>Costo acquisto (€)</label>
-                <input type="number" inputMode="decimal" placeholder="0" value={costo} onChange={e=>setCosto(e.target.value)}/>
-              </div>
-              <div>
-                <label>Spese (lavaggio, riparazioni, ecc.) (€)</label>
-                <input type="number" inputMode="decimal" placeholder="0" value={spese} onChange={e=>setSpese(e.target.value)}/>
-              </div>
-            </div>
-
-            <label>Descrizione</label>
-            <textarea rows="4" value={descrizione} onChange={e=>setDescrizione(e.target.value)}
-                      placeholder="Taglia, misura, difetti, materiali, vestibilità…"></textarea>
-
-            <button className="btn" onClick={calcolaPrezzo}>Calcola prezzo</button>
-            {suggerimento && <div className="result" onClick={()=>copia(suggerimento)} title="Tocca per copiare">{suggerimento}</div>}
-
-            <button className="btn" onClick={generaAnnuncio}>Genera annuncio</button>
-            {annuncio && <div className="result" onClick={()=>copia(annuncio)} title="Tocca per copiare">{annuncio}</div>}
-
-            <p className="muted">Tocca i riquadri per copiare il testo. Questa è una versione semplificata (senza build). Poi potremo migliorare grafica e funzioni.</p>
-          </>
-        );
+      const costoTot = costo + spese;
+      // Prezzo base = costoTot + margine%
+      let prezzo = costoTot * (1 + marginPct/100);
+      // commissione marketplace se applica
+      if (feePct > 0){
+        prezzo = prezzo * (1 + feePct/100);
       }
+      // arrotonda “carino” (es. .99)
+      prezzo = Math.max(prezzo, 1);
+      const pretty = Math.round(prezzo) - 0.01;
+      $('#prezzoOut').textContent = money(pretty);
 
-      ReactDOM.createRoot(document.getElementById('app')).render(<App />);
-    </script>
-  </body>
+      $('#recap').textContent = `Costi totali ${money(costoTot)} — Margine ${marginPct}%` ;
+      return pretty;
+    }
+
+    // ------- Annuncio
+    function generaAnnuncio(){
+      const titolo = val('titolo') || 'Articolo';
+      const categoria = val('categoria');
+      const condizione = val('condizione');
+      const descr = val('descr');
+      const prezzo = calcolaPrezzo();
+
+      const blocco = `${titolo} — ${categoria}\n\nCondizione: ${condizione}.\n${descr}\n\nPrezzo: ${money(prezzo)}.\n\nDisponibile per spedizione o ritiro. Contattami per info o foto aggiuntive.`;
+      $('#annuncioOut').value = blocco;
+      salvaDraft();
+      return blocco;
+    }
+
+    // ------- Copia & Condividi
+    function copiaSelettore(sel){
+      const el = $(sel);
+      const text = el?.innerText || el?.value || '';
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(()=> toast('Copiato!'));
+    }
+    function toast(msg){
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = "position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#111827;color:#e6eef6;padding:10px 14px;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.35);z-index:9999";
+      document.body.appendChild(t);
+      setTimeout(()=>{ t.remove() },1200);
+    }
+
+    // ------- Local Storage (bozza)
+    const fields = ['titolo','categoria','condizione','costo','spese','margine','fee','descr'];
+    function salvaDraft(){
+      const data = {};
+      fields.forEach(id => data[id] = val(id));
+      localStorage.setItem('fh_draft', JSON.stringify(data));
+    }
+    function caricaDraft(){
+      const raw = localStorage.getItem('fh_draft');
+      if(!raw) return;
+      try{
+        const data = JSON.parse(raw);
+        fields.forEach(id => {
+          if(data[id] !== undefined) document.getElementById(id).value = data[id];
+        });
+      }catch(e){}
+    }
+
+    // ------- Eventi
+    $('#calcola').addEventListener('click', calcolaPrezzo);
+    $('#genera').addEventListener('click', generaAnnuncio);
+    $('#reset').addEventListener('click', ()=>{
+      fields.forEach(id => document.getElementById(id).value = id==='margine' ? 30 : (id==='fee'?0:''));
+      $('#annuncioOut').value = '';
+      $('#prezzoOut').textContent = '—';
+      $('#recap').textContent = 'Costi totali €0 — Margine 0%';
+      localStorage.removeItem('fh_draft');
+    });
+    document.querySelector('[data-copy="#prezzoOut"]').addEventListener('click', ()=> copiaSelettore('#prezzoOut'));
+    $('#copyAnnuncio').addEventListener('click', ()=> copiaSelettore('#annuncioOut'));
+    $('#shareAnnuncio').addEventListener('click', ()=>{
+      const text = $('#annuncioOut').value.trim() || generaAnnuncio();
+      if (navigator.share) {
+        navigator.share({text}).catch(()=>{});
+      } else {
+        navigator.clipboard.writeText(text).then(()=> toast('Testo copiato'));
+      }
+    });
+
+    // autosave
+    document.querySelectorAll('input,select,textarea').forEach(i=> i.addEventListener('input', salvaDraft));
+    caricaDraft();
+    calcolaPrezzo();
+  </script>
+</body>
 </html>
