@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -14,68 +13,73 @@
       --text:#e6eef6;
       --brand:#22c55e;
       --brand-2:#0ea5e9;
-      --warn:#f59e0b;
       --radius:16px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
+      --input:#0b1424;
+      --border:rgba(255,255,255,.08);
     }
+    @media (prefers-color-scheme:light){
+      :root{
+        --bg:#f5f7fb; --panel:#ffffff; --text:#0b1220; --muted:#5c6b76;
+        --input:#f3f6fb; --border:rgba(0,0,0,.08);
+      }
+    }
+    [data-theme="light"]{
+      --bg:#f5f7fb; --panel:#ffffff; --text:#0b1220; --muted:#5c6b76;
+      --input:#f3f6fb; --border:rgba(0,0,0,.08);
+    }
+    [data-theme="dark"]{
+      --bg:#0b1220; --panel:#0e1729; --text:#e6eef6; --muted:#91a3b0;
+      --input:#0b1424; --border:rgba(255,255,255,.08);
+    }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Arial,sans-serif;
       background:
-        radial-gradient(1200px 600px at 100% -20%, rgba(14,165,233,.18), transparent 60%),
-        radial-gradient(1000px 600px at -20% 120%, rgba(34,197,94,.12), transparent 60%),
+        radial-gradient(1200px 600px at 100% -20%, color-mix(in oklab, var(--brand-2) 18%, transparent), transparent 60%),
+        radial-gradient(1000px 600px at -20% 120%, color-mix(in oklab, var(--brand) 12%, transparent), transparent 60%),
         var(--bg);
       color:var(--text);
       line-height:1.35;
     }
-    .wrap{
-      max-width:940px;
-      margin-inline:auto;
-      padding:24px clamp(16px,3vw,28px) 64px;
-    }
-    header{
-      display:flex; gap:14px; align-items:center; margin-bottom:18px;
-    }
+    .wrap{max-width:940px;margin-inline:auto;padding:24px clamp(16px,3vw,28px) 64px}
+    header{display:flex; gap:14px; align-items:center; margin-bottom:18px; justify-content:space-between}
+    .brand{display:flex; gap:12px; align-items:center}
     .logo{
       width:44px;height:44px;display:grid;place-items:center;
       border-radius:12px;
       background:linear-gradient(135deg,var(--brand-2),#38bdf8);
-      box-shadow:var(--shadow);
-      font-weight:800;
+      box-shadow:var(--shadow);font-weight:800;color:#031320
     }
     h1{font-size:clamp(22px,4.6vw,34px); margin:0}
-    .sub{color:var(--muted); font-size:.96rem}
-    .grid{
-      display:grid; gap:14px;
-      grid-template-columns:1fr;
+    .sub{color:var(--muted); font-size:.95rem}
+
+    .theme-btn{
+      appearance:none;border:1px solid var(--border);background:var(--panel);
+      color:var(--text);border-radius:12px;padding:10px 12px;cursor:pointer
     }
-    @media (min-width:880px){
-      .grid{grid-template-columns:1.2fr .9fr}
-    }
+
+    .grid{display:grid; gap:14px; grid-template-columns:1fr}
+    @media (min-width:880px){ .grid{grid-template-columns:1.2fr .9fr} }
+
     .card{
-      background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 40%) , var(--panel);
-      border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 40%), var(--panel);
+      border:1px solid var(--border);
       border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;
+      box-shadow:var(--shadow); padding:18px;
     }
     .card h2{margin:4px 0 14px; font-size:1.1rem}
-    label{display:block; font-size:.9rem; color:#bfd3df; margin:10px 0 6px}
+    label{display:block; font-size:.9rem; color:var(--muted); margin:10px 0 6px}
     input, select, textarea{
-      width:100%;
-      background:#0b1424;
-      color:var(--text);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:12px;
-      padding:12px 14px;
-      outline:none;
-      transition:.18s border, .18s box-shadow;
+      width:100%; background:var(--input); color:var(--text);
+      border:1px solid var(--border); border-radius:12px; padding:12px 14px;
+      outline:none; transition:.18s border, .18s box-shadow;
     }
     input:focus, select:focus, textarea:focus{
-      border-color:#38bdf8;
-      box-shadow:0 0 0 4px rgba(14,165,233,.18);
+      border-color:#38bdf8; box-shadow:0 0 0 4px rgba(14,165,233,.18);
     }
     textarea{min-height:110px; resize:vertical}
     .row{display:grid; gap:10px; grid-template-columns:1fr}
@@ -88,33 +92,34 @@
       transition:transform .05s ease, filter .15s ease;
     }
     .primary{background:linear-gradient(135deg,var(--brand),#16a34a); color:#06280f}
-    .ghost{background:#0b1424; color:#e8f2fa; border:1px solid rgba(255,255,255,.08)}
+    .ghost{background:var(--input); color:var(--text); border:1px solid var(--border)}
     .light{background:linear-gradient(135deg,var(--brand-2),#38bdf8); color:#031320}
     button:active{transform:translateY(1px)}
     .muted{color:var(--muted); font-size:.9rem}
 
-    .out{
-      display:grid; gap:10px;
-    }
+    .out{display:grid; gap:10px}
     .pill{
       display:flex; align-items:center; justify-content:space-between;
-      background:#0b1424; border:1px solid rgba(255,255,255,.08);
+      background:var(--input); border:1px solid var(--border);
       padding:12px 14px; border-radius:12px;
     }
     .price{ font-size:clamp(22px,5.6vw,32px); font-weight:900; letter-spacing:.3px}
-    .copy{ padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.1); background:#0e1729; color:#d6e7f3}
-    .footer{margin-top:24px; color:#9fb3c5; font-size:.85rem; text-align:center}
-    .tag{display:inline-flex; gap:6px; align-items:center; font-size:.8rem; background:#0b1424; border:1px solid rgba(255,255,255,.08); padding:6px 10px; border-radius:999px}
+    .copy{ padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:var(--panel); color:var(--text)}
+    .footer{margin-top:24px; color:var(--muted); font-size:.85rem; text-align:center}
+    .tag{display:inline-flex; gap:6px; align-items:center; font-size:.8rem; background:var(--input); border:1px solid var(--border); padding:6px 10px; border-radius:999px}
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="wrap" id="appRoot">
     <header>
-      <div class="logo">FH</div>
-      <div>
-        <h1>FlipHelper</h1>
-        <div class="sub">Crea l’annuncio perfetto e calcola il prezzo in 1 minuto.</div>
+      <div class="brand">
+        <div class="logo">FH</div>
+        <div>
+          <h1>FlipHelper</h1>
+          <div class="sub">Crea l’annuncio perfetto e calcola il prezzo in 1 minuto.</div>
+        </div>
       </div>
+      <button class="theme-btn" id="toggleTheme">Tema: auto</button>
     </header>
 
     <div class="grid">
@@ -181,8 +186,8 @@
         </div>
 
         <p class="muted" style="margin-top:10px">
-          Suggerimento: imposta la <b>commissione</b> se il marketplace trattiene una percentuale.
-          Per Vinted/Wallapop spesso il costo di protezione/servizio lo paga l’acquirente: puoi lasciarla a 0.
+          Se il marketplace trattiene una percentuale, imposta <b>commissione</b>.  
+          Su Vinted/Wallapop spesso le fee le paga l’acquirente → puoi lasciare 0%.
         </p>
       </section>
 
@@ -203,7 +208,9 @@
             <div class="muted" style="margin-bottom:6px">Annuncio (titolo + descrizione)</div>
             <textarea id="annuncioOut" readonly></textarea>
             <div class="btns" style="margin-top:8px">
-              <button class="ghost" id="copyAnnuncio">Copia testo</button>
+              <button class="ghost" id="copyTitolo">Copia solo titolo</button>
+              <button class="ghost" id="copyDescr">Copia solo descrizione</button>
+              <button class="ghost" id="copyAnnuncio">Copia tutto</button>
               <button class="ghost" id="shareAnnuncio">Condividi…</button>
             </div>
           </div>
@@ -215,19 +222,30 @@
       </section>
     </div>
 
-    <p class="footer">© FlipHelper — versione leggera per GitHub Pages. In seguito possiamo aggiungere salvataggi,
-      esportazione, immagini e tema chiaro/scuro.</p>
+    <p class="footer">© FlipHelper — versione leggera per GitHub Pages. In seguito possiamo aggiungere icone/PWA, immagini e salvataggi cloud.</p>
   </div>
 
   <script>
+    // ------- THEME TOGGLE (auto / light / dark)
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('toggleTheme');
+    function applyTheme(mode){ // 'auto' | 'light' | 'dark'
+      root.removeAttribute('data-theme');
+      if (mode === 'light') root.setAttribute('data-theme','light');
+      if (mode === 'dark') root.setAttribute('data-theme','dark');
+      localStorage.setItem('fh_theme', mode);
+      themeBtn.textContent = `Tema: ${mode}`;
+    }
+    themeBtn.addEventListener('click', ()=>{
+      const cur = localStorage.getItem('fh_theme') || 'auto';
+      applyTheme(cur === 'auto' ? 'light' : cur === 'light' ? 'dark' : 'auto');
+    });
+    applyTheme(localStorage.getItem('fh_theme') || 'auto');
+
     // ------- Utility
     const $ = s => document.querySelector(s);
     const val = id => (document.getElementById(id).value || '').trim();
-
-    const money = n => {
-      if (isNaN(n)) return '—';
-      return new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(n);
-    };
+    const money = n => isNaN(n) ? '—' : new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(n);
 
     // ------- Calcolo prezzo
     function calcolaPrezzo(){
@@ -237,18 +255,14 @@
       const feePct = parseFloat(val('fee')) || 0;
 
       const costoTot = costo + spese;
-      // Prezzo base = costoTot + margine%
       let prezzo = costoTot * (1 + marginPct/100);
-      // commissione marketplace se applica
-      if (feePct > 0){
-        prezzo = prezzo * (1 + feePct/100);
-      }
-      // arrotonda “carino” (es. .99)
+      if (feePct > 0) prezzo *= (1 + feePct/100);
+
       prezzo = Math.max(prezzo, 1);
       const pretty = Math.round(prezzo) - 0.01;
-      $('#prezzoOut').textContent = money(pretty);
 
-      $('#recap').textContent = `Costi totali ${money(costoTot)} — Margine ${marginPct}%` ;
+      $('#prezzoOut').textContent = money(pretty);
+      $('#recap').textContent = `Costi totali ${money(costoTot)} — Margine ${marginPct}%`;
       return pretty;
     }
 
@@ -260,10 +274,11 @@
       const descr = val('descr');
       const prezzo = calcolaPrezzo();
 
-      const blocco = `${titolo} — ${categoria}\n\nCondizione: ${condizione}.\n${descr}\n\nPrezzo: ${money(prezzo)}.\n\nDisponibile per spedizione o ritiro. Contattami per info o foto aggiuntive.`;
-      $('#annuncioOut').value = blocco;
+      const testoTitolo = `${titolo}`;
+      const testoDescr = `Categoria: ${categoria}\nCondizione: ${condizione}.\n${descr}\n\nPrezzo: ${money(prezzo)}.\nDisponibile per spedizione o ritiro.`;
+      $('#annuncioOut').value = `${testoTitolo}\n\n${testoDescr}`;
       salvaDraft();
-      return blocco;
+      return {titolo:testoTitolo, descr: testoDescr};
     }
 
     // ------- Copia & Condividi
@@ -271,6 +286,9 @@
       const el = $(sel);
       const text = el?.innerText || el?.value || '';
       if (!text) return;
+      navigator.clipboard.writeText(text).then(()=> toast('Copiato!'));
+    }
+    function copiaTesto(text){
       navigator.clipboard.writeText(text).then(()=> toast('Copiato!'));
     }
     function toast(msg){
@@ -301,23 +319,34 @@
 
     // ------- Eventi
     $('#calcola').addEventListener('click', calcolaPrezzo);
-    $('#genera').addEventListener('click', generaAnnuncio);
+    $('#genera').addEventListener('click', ()=>{
+      const x = generaAnnuncio();
+      lastPieces = x; // per i bottoni di copia singola
+    });
     $('#reset').addEventListener('click', ()=>{
       fields.forEach(id => document.getElementById(id).value = id==='margine' ? 30 : (id==='fee'?0:''));
       $('#annuncioOut').value = '';
       $('#prezzoOut').textContent = '—';
       $('#recap').textContent = 'Costi totali €0 — Margine 0%';
       localStorage.removeItem('fh_draft');
+      lastPieces = {titolo:'', descr:''};
     });
     document.querySelector('[data-copy="#prezzoOut"]').addEventListener('click', ()=> copiaSelettore('#prezzoOut'));
     $('#copyAnnuncio').addEventListener('click', ()=> copiaSelettore('#annuncioOut'));
+
+    let lastPieces = {titolo:'', descr:''};
+    $('#copyTitolo').addEventListener('click', ()=>{
+      if(!lastPieces.titolo) lastPieces = generaAnnuncio();
+      copiaTesto(lastPieces.titolo);
+    });
+    $('#copyDescr').addEventListener('click', ()=>{
+      if(!lastPieces.descr) lastPieces = generaAnnuncio();
+      copiaTesto(lastPieces.descr);
+    });
     $('#shareAnnuncio').addEventListener('click', ()=>{
-      const text = $('#annuncioOut').value.trim() || generaAnnuncio();
-      if (navigator.share) {
-        navigator.share({text}).catch(()=>{});
-      } else {
-        navigator.clipboard.writeText(text).then(()=> toast('Testo copiato'));
-      }
+      const text = ($('#annuncioOut').value || '').trim() || (generaAnnuncio(), $('#annuncioOut').value);
+      if (navigator.share) navigator.share({text}).catch(()=>{});
+      else copiaTesto(text);
     });
 
     // autosave
