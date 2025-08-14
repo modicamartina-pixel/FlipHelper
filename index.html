@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FlipHelper — Annunci & Prezzo</title>
   <meta name="theme-color" content="#0ea5e9" />
+  <link rel="manifest" href="./manifest.webmanifest">
   <style>
     :root{
       --bg:#0b1220;
@@ -353,6 +354,13 @@
     document.querySelectorAll('input,select,textarea').forEach(i=> i.addEventListener('input', salvaDraft));
     caricaDraft();
     calcolaPrezzo();
+  </script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js');
+    });
+  }
   </script>
 </body>
 </html>
