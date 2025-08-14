@@ -2,365 +2,350 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FlipHelper — Annunci & Prezzo</title>
-  <meta name="theme-color" content="#0ea5e9" />
-  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlipHelper – Annunci & Prezzo</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0b1220;
-      --panel:#0e1729;
-      --muted:#91a3b0;
-      --text:#e6eef6;
-      --brand:#22c55e;
-      --brand-2:#0ea5e9;
-      --radius:16px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --input:#0b1424;
-      --border:rgba(255,255,255,.08);
-    }
-    @media (prefers-color-scheme:light){
-      :root{
-        --bg:#f5f7fb; --panel:#ffffff; --text:#0b1220; --muted:#5c6b76;
-        --input:#f3f6fb; --border:rgba(0,0,0,.08);
-      }
-    }
-    [data-theme="light"]{
-      --bg:#f5f7fb; --panel:#ffffff; --text:#0b1220; --muted:#5c6b76;
-      --input:#f3f6fb; --border:rgba(0,0,0,.08);
-    }
-    [data-theme="dark"]{
-      --bg:#0b1220; --panel:#0e1729; --text:#e6eef6; --muted:#91a3b0;
-      --input:#0b1424; --border:rgba(255,255,255,.08);
+      --bg1:#0ea5ea;  /* azzurro */
+      --bg2:#7c3aed;  /* viola   */
+      --ink:#e2e8f0;  /* testo chiaro */
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,.07);
+      --stroke: rgba(255,255,255,.14);
+      --accent:#22c55e;  /* verde pulsanti */
+      --accent-2:#f59e0b; /* arancio pill */
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Arial,sans-serif;
-      background:
-        radial-gradient(1200px 600px at 100% -20%, color-mix(in oklab, var(--brand-2) 18%, transparent), transparent 60%),
-        radial-gradient(1000px 600px at -20% 120%, color-mix(in oklab, var(--brand) 12%, transparent), transparent 60%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.35;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background: radial-gradient(1300px 900px at 10% 10%, rgba(255,255,255,.12), transparent 60%),
+                  radial-gradient(1200px 700px at 90% 20%, rgba(255,255,255,.10), transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      background-size: 200% 200%;
+      animation: moveBg 18s ease-in-out infinite alternate;
     }
-    .wrap{max-width:940px;margin-inline:auto;padding:24px clamp(16px,3vw,28px) 64px}
-    header{display:flex; gap:14px; align-items:center; margin-bottom:18px; justify-content:space-between}
-    .brand{display:flex; gap:12px; align-items:center}
+    @keyframes moveBg{
+      from{ background-position: 0% 0%, 100% 0%, 0% 0%; }
+      to{   background-position: 100% 100%, 0% 100%, 100% 100%; }
+    }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+
+    .hero{
+      display:flex; align-items:center; gap:16px;
+      margin-bottom: 14px;
+    }
     .logo{
-      width:44px;height:44px;display:grid;place-items:center;
-      border-radius:12px;
-      background:linear-gradient(135deg,var(--brand-2),#38bdf8);
-      box-shadow:var(--shadow);font-weight:800;color:#031320
+      width:48px; height:48px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,.05));
+      box-shadow: inset 0 0 0 1px var(--stroke), 0 8px 30px rgba(0,0,0,.25);
+      display:grid; place-items:center; font-weight:800; letter-spacing:.5px;
     }
-    h1{font-size:clamp(22px,4.6vw,34px); margin:0}
-    .sub{color:var(--muted); font-size:.95rem}
+    h1{ margin:0; font-size: clamp(26px, 3.4vw, 40px); }
+    .sub{ color:var(--muted); margin-top:4px; }
 
-    .theme-btn{
-      appearance:none;border:1px solid var(--border);background:var(--panel);
-      color:var(--text);border-radius:12px;padding:10px 12px;cursor:pointer
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .chip{
+      font-size:13px; padding:6px 10px; border-radius:999px;
+      background:rgba(0,0,0,.22); border:1px solid var(--stroke);
     }
+    .chip--accent{ background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.4); }
 
-    .grid{display:grid; gap:14px; grid-template-columns:1fr}
-    @media (min-width:880px){ .grid{grid-template-columns:1.2fr .9fr} }
+    .grid{
+      display:grid; gap:18px; margin-top:22px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px){
+      .grid{ grid-template-columns: 1.1fr .9fr; }
+    }
 
     .card{
-      background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 40%), var(--panel);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow); padding:18px;
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 18px;
     }
-    .card h2{margin:4px 0 14px; font-size:1.1rem}
-    label{display:block; font-size:.9rem; color:var(--muted); margin:10px 0 6px}
-    input, select, textarea{
-      width:100%; background:var(--input); color:var(--text);
-      border:1px solid var(--border); border-radius:12px; padding:12px 14px;
-      outline:none; transition:.18s border, .18s box-shadow;
+    .card h2{ margin:4px 0 14px; font-size: clamp(18px, 2.2vw, 22px); }
+
+    label{
+      display:block; margin:14px 0 8px; font-weight:600; font-size:14px;
     }
+    input[type="text"], input[type="number"], select, textarea{
+      width:100%;
+      background: rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      color:var(--ink);
+      border-radius: 12px;
+      padding: 12px 13px;
+      outline:none;
+      transition: .2s border-color, .2s background;
+    }
+    textarea{ min-height:110px; resize: vertical; }
     input:focus, select:focus, textarea:focus{
-      border-color:#38bdf8; box-shadow:0 0 0 4px rgba(14,165,233,.18);
+      border-color: rgba(255,255,255,.45);
+      background: rgba(255,255,255,.09);
     }
-    textarea{min-height:110px; resize:vertical}
-    .row{display:grid; gap:10px; grid-template-columns:1fr}
-    @media (min-width:560px){ .row{ grid-template-columns:1fr 1fr } }
+    .row{ display:grid; gap:12px; grid-template-columns: 1fr; }
+    @media (min-width: 640px){ .row{ grid-template-columns: 1fr 1fr; } }
 
-    .btns{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
-    button{
-      appearance:none; border:0; cursor:pointer;
-      padding:12px 16px; border-radius:12px; font-weight:700;
-      transition:transform .05s ease, filter .15s ease;
+    .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .btn{
+      border:0; padding:12px 16px; border-radius:12px; font-weight:700;
+      cursor:pointer; transition:.2s transform,.2s filter; will-change: transform;
     }
-    .primary{background:linear-gradient(135deg,var(--brand),#16a34a); color:#06280f}
-    .ghost{background:var(--input); color:var(--text); border:1px solid var(--border)}
-    .light{background:linear-gradient(135deg,var(--brand-2),#38bdf8); color:#031320}
-    button:active{transform:translateY(1px)}
-    .muted{color:var(--muted); font-size:.9rem}
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .btn:active{ transform: translateY(0); }
+    .btn--accent{ background: var(--accent); color:#06210f; }
+    .btn--ghost{ background: transparent; color: var(--ink); border:1px solid var(--stroke); }
 
-    .out{display:grid; gap:10px}
-    .pill{
-      display:flex; align-items:center; justify-content:space-between;
-      background:var(--input); border:1px solid var(--border);
-      padding:12px 14px; border-radius:12px;
+    .result{
+      background: rgba(0,0,0,.18);
+      border: 1px dashed var(--stroke);
+      border-radius: 14px;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      word-break: break-word;
+      cursor: pointer;
+      user-select: none;
     }
-    .price{ font-size:clamp(22px,5.6vw,32px); font-weight:900; letter-spacing:.3px}
-    .copy{ padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:var(--panel); color:var(--text)}
-    .footer{margin-top:24px; color:var(--muted); font-size:.85rem; text-align:center}
-    .tag{display:inline-flex; gap:6px; align-items:center; font-size:.8rem; background:var(--input); border:1px solid var(--border); padding:6px 10px; border-radius:999px}
+    .result:active{ transform: scale(.995); }
+
+    .price{
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 800;
+      margin: 8px 0 2px;
+    }
+    .muted{ color:var(--muted); font-size: 13px; }
+
+    footer{
+      text-align:center; color:var(--muted); margin:26px 0 10px; font-size:13px;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap" id="appRoot">
-    <header>
-      <div class="brand">
-        <div class="logo">FH</div>
-        <div>
-          <h1>FlipHelper</h1>
-          <div class="sub">Crea l’annuncio perfetto e calcola il prezzo in 1 minuto.</div>
+  <div class="wrap">
+    <div class="hero">
+      <div class="logo">FH</div>
+      <div>
+        <h1>FlipHelper</h1>
+        <div class="sub">Crea annunci velocemente e ottieni un <b>prezzo suggerito</b> per Vinted / Wallapop.</div>
+        <div class="chips">
+          <div class="chip chip--accent">Senza login</div>
+          <div class="chip">Mobile-friendly</div>
+          <div class="chip">Copia con un tocco</div>
         </div>
       </div>
-      <button class="theme-btn" id="toggleTheme">Tema: auto</button>
-    </header>
+    </div>
 
     <div class="grid">
-      <!-- Form -->
+      <!-- FORM -->
       <section class="card">
-        <h2>Dettagli articolo</h2>
+        <h2>Dati articolo</h2>
 
-        <label for="titolo">Titolo</label>
-        <input id="titolo" placeholder="Es. Sneakers Nike Air Max 37 EU"/>
+        <label for="title">Titolo</label>
+        <input id="title" type="text" placeholder="Es. Sneakers Nike Air Max 90" />
 
         <div class="row">
           <div>
-            <label for="categoria">Categoria</label>
-            <select id="categoria">
+            <label for="category">Categoria</label>
+            <select id="category">
               <option>Abbigliamento</option>
               <option>Scarpe</option>
+              <option>Borse</option>
               <option>Accessori</option>
               <option>Elettronica</option>
-              <option>Casa</option>
+              <option>Casa &amp; Living</option>
+              <option>Libri / Media</option>
               <option>Altro</option>
             </select>
           </div>
           <div>
-            <label for="condizione">Condizione</label>
-            <select id="condizione">
+            <label for="condition">Condizione</label>
+            <select id="condition">
               <option>Ottimo</option>
               <option>Buono</option>
               <option>Discreto</option>
               <option>Nuovo con etichette</option>
-              <option>Nuovo senza etichette</option>
             </select>
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label for="costo">Costo acquisto (€)</label>
-            <input id="costo" type="number" min="0" step="0.01" value="0" />
+            <label for="margin">Margine desiderato (%)</label>
+            <input id="margin" type="number" value="30" min="0" step="1" />
           </div>
           <div>
-            <label for="spese">Spese (lavaggio, riparazioni, ecc.) (€)</label>
-            <input id="spese" type="number" min="0" step="0.01" value="0" />
+            <label for="cost">Costo acquisto (€)</label>
+            <input id="cost" type="number" value="0" min="0" step="0.01" />
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label for="margine">Margine desiderato (%)</label>
-            <input id="margine" type="number" min="0" max="300" step="1" value="30" />
+            <label for="fees">Spese (lavaggio, riparazioni, ecc.) (€)</label>
+            <input id="fees" type="number" value="0" min="0" step="0.01" />
           </div>
           <div>
-            <label for="fee">Commissione marketplace (%)</label>
-            <input id="fee" type="number" min="0" max="50" step="0.1" value="0" />
+            <label for="ship">Spedizione (facoltativa) (€)</label>
+            <input id="ship" type="number" value="0" min="0" step="0.01" />
           </div>
         </div>
 
-        <label for="descr">Descrizione</label>
-        <textarea id="descr" placeholder="Taglia, misure, difetti, materiali, vestibilità..."></textarea>
+        <label for="desc">Descrizione</label>
+        <textarea id="desc" placeholder="Taglia, misura, difetti, materiali, vestibilità…"></textarea>
 
         <div class="btns">
-          <button class="primary" id="calcola">Calcola prezzo</button>
-          <button class="light" id="genera">Genera annuncio</button>
-          <button class="ghost" id="reset">Pulisci</button>
+          <button class="btn btn--accent" id="btnPrice">Calcola prezzo</button>
+          <button class="btn btn--ghost" id="btnAd">Genera annuncio</button>
         </div>
-
-        <p class="muted" style="margin-top:10px">
-          Se il marketplace trattiene una percentuale, imposta <b>commissione</b>.  
-          Su Vinted/Wallapop spesso le fee le paga l’acquirente → puoi lasciare 0%.
-        </p>
       </section>
 
-      <!-- Risultati -->
+      <!-- RISULTATI -->
       <section class="card">
-        <h2>Risultati</h2>
+        <h2>Risultato</h2>
 
-        <div class="out">
-          <div class="pill">
-            <div>
-              <div class="muted">Prezzo suggerito</div>
-              <div class="price" id="prezzoOut">—</div>
-            </div>
-            <button class="copy" data-copy="#prezzoOut">Copia</button>
-          </div>
+        <div>
+          <div class="muted">Prezzo suggerito</div>
+          <div class="price" id="priceOut">—</div>
+          <div class="muted" id="priceNote"></div>
+        </div>
 
-          <div>
-            <div class="muted" style="margin-bottom:6px">Annuncio (titolo + descrizione)</div>
-            <textarea id="annuncioOut" readonly></textarea>
-            <div class="btns" style="margin-top:8px">
-              <button class="ghost" id="copyTitolo">Copia solo titolo</button>
-              <button class="ghost" id="copyDescr">Copia solo descrizione</button>
-              <button class="ghost" id="copyAnnuncio">Copia tutto</button>
-              <button class="ghost" id="shareAnnuncio">Condividi…</button>
-            </div>
-          </div>
-
-          <div class="muted">
-            <span class="tag" id="recap">Costi totali €0 — Margine 0%</span>
-          </div>
+        <div style="margin-top:18px;">
+          <div class="muted" style="margin-bottom:8px;">Annuncio (tocca per copiare)</div>
+          <div class="result" id="adOut">—</div>
         </div>
       </section>
     </div>
 
-    <p class="footer">© FlipHelper — versione leggera per GitHub Pages. In seguito possiamo aggiungere icone/PWA, immagini e salvataggi cloud.</p>
+    <footer>Tip: tocca i riquadri per copiare il testo negli appunti.</footer>
   </div>
 
   <script>
-    // ------- THEME TOGGLE (auto / light / dark)
-    const root = document.documentElement;
-    const themeBtn = document.getElementById('toggleTheme');
-    function applyTheme(mode){ // 'auto' | 'light' | 'dark'
-      root.removeAttribute('data-theme');
-      if (mode === 'light') root.setAttribute('data-theme','light');
-      if (mode === 'dark') root.setAttribute('data-theme','dark');
-      localStorage.setItem('fh_theme', mode);
-      themeBtn.textContent = `Tema: ${mode}`;
-    }
-    themeBtn.addEventListener('click', ()=>{
-      const cur = localStorage.getItem('fh_theme') || 'auto';
-      applyTheme(cur === 'auto' ? 'light' : cur === 'light' ? 'dark' : 'auto');
-    });
-    applyTheme(localStorage.getItem('fh_theme') || 'auto');
+    // --- UTIL
+    const € = (n) => new Intl.NumberFormat('it-IT', {style:'currency', currency:'EUR'}).format(n);
 
-    // ------- Utility
-    const $ = s => document.querySelector(s);
-    const val = id => (document.getElementById(id).value || '').trim();
-    const money = n => isNaN(n) ? '—' : new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(n);
+    const el = (id) => document.getElementById(id);
+    const title = el('title');
+    const category = el('category');
+    const condition = el('condition');
+    const margin = el('margin');
+    const cost = el('cost');
+    const fees = el('fees');
+    const ship = el('ship');
+    const desc = el('desc');
 
-    // ------- Calcolo prezzo
-    function calcolaPrezzo(){
-      const costo = parseFloat(val('costo')) || 0;
-      const spese = parseFloat(val('spese')) || 0;
-      const marginPct = parseFloat(val('margine')) || 0;
-      const feePct = parseFloat(val('fee')) || 0;
+    const priceOut = el('priceOut');
+    const priceNote = el('priceNote');
+    const adOut = el('adOut');
 
-      const costoTot = costo + spese;
-      let prezzo = costoTot * (1 + marginPct/100);
-      if (feePct > 0) prezzo *= (1 + feePct/100);
-
-      prezzo = Math.max(prezzo, 1);
-      const pretty = Math.round(prezzo) - 0.01;
-
-      $('#prezzoOut').textContent = money(pretty);
-      $('#recap').textContent = `Costi totali ${money(costoTot)} — Margine ${marginPct}%`;
-      return pretty;
+    // Piccola funzione per stimare tasse/piattaforma (molto semplificato)
+    function platformFee(subtotal){
+      // simuliamo 10% + 0,35 €
+      return subtotal * 0.10 + 0.35;
     }
 
-    // ------- Annuncio
-    function generaAnnuncio(){
-      const titolo = val('titolo') || 'Articolo';
-      const categoria = val('categoria');
-      const condizione = val('condizione');
-      const descr = val('descr');
-      const prezzo = calcolaPrezzo();
+    function calcPrice(){
+      const c = parseFloat(cost.value || 0);
+      const f = parseFloat(fees.value || 0);
+      const s = parseFloat(ship.value || 0);
+      const m = Math.max(0, parseFloat(margin.value || 0)) / 100;
 
-      const testoTitolo = `${titolo}`;
-      const testoDescr = `Categoria: ${categoria}\nCondizione: ${condizione}.\n${descr}\n\nPrezzo: ${money(prezzo)}.\nDisponibile per spedizione o ritiro.`;
-      $('#annuncioOut').value = `${testoTitolo}\n\n${testoDescr}`;
-      salvaDraft();
-      return {titolo:testoTitolo, descr: testoDescr};
-    }
+      // costo totale prima del margine
+      const base = c + f + s;
 
-    // ------- Copia & Condividi
-    function copiaSelettore(sel){
-      const el = $(sel);
-      const text = el?.innerText || el?.value || '';
-      if (!text) return;
-      navigator.clipboard.writeText(text).then(()=> toast('Copiato!'));
-    }
-    function copiaTesto(text){
-      navigator.clipboard.writeText(text).then(()=> toast('Copiato!'));
-    }
-    function toast(msg){
-      const t = document.createElement('div');
-      t.textContent = msg;
-      t.style.cssText = "position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#111827;color:#e6eef6;padding:10px 14px;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.35);z-index:9999";
-      document.body.appendChild(t);
-      setTimeout(()=>{ t.remove() },1200);
+      // target “utile desiderato”
+      const desiredProfit = base * m;
+
+      // prezzo lordo prima delle fee piattaforma
+      const gross = base + desiredProfit;
+
+      // fee piattaforma (semplificate)
+      const pf = platformFee(gross);
+
+      // prezzo finale arrotondato a .90
+      let final = gross + pf;
+      final = Math.max(final, 0);
+      final = Math.round(final) - 0.10;   // 19.90, 24.90 ecc.
+      if (final < 1) final = Math.round(gross + pf); // fallback
+
+      priceOut.textContent = €(final);
+      priceNote.textContent = `Base ${€(base)} + margine ~${Math.round(m*100)}% + fee piattaforma ≈ ${€(pf)}.`;
+      return final;
     }
 
-    // ------- Local Storage (bozza)
-    const fields = ['titolo','categoria','condizione','costo','spese','margine','fee','descr'];
-    function salvaDraft(){
-      const data = {};
-      fields.forEach(id => data[id] = val(id));
-      localStorage.setItem('fh_draft', JSON.stringify(data));
+    function makeAd(){
+      const t = title.value?.trim() || 'Articolo';
+      const cat = category.value;
+      const cond = condition.value;
+      const d = desc.value?.trim() || 'Info in descrizione.';
+
+      const price = calcPrice();
+
+      const bullets = [
+        `Categoria: ${cat}`,
+        `Condizione: ${cond}`,
+        `Spese incluse: ${€(parseFloat(fees.value||0))}`,
+        (ship.value && parseFloat(ship.value)>0) ? `Spedizione stimata: ${€(parseFloat(ship.value))}` : null
+      ].filter(Boolean);
+
+      const txt =
+`${t} – ${cond}
+${d}
+
+${bullets.map(b=>`• ${b}`).join('\n')}
+Prezzo suggerito: ${€(price)}
+
+#fliphelper #secondamano #${cat.toLowerCase().replace(/[^a-zàèéìòù0-9]+/gi,'')}`;
+      adOut.textContent = txt;
+      return txt;
     }
-    function caricaDraft(){
-      const raw = localStorage.getItem('fh_draft');
-      if(!raw) return;
+
+    // Eventi
+    document.getElementById('btnPrice').addEventListener('click', calcPrice);
+    document.getElementById('btnAd').addEventListener('click', makeAd);
+
+    // copia con un tocco
+    adOut.addEventListener('click', async () => {
+      const text = adOut.textContent.trim();
+      if (!text || text === '—') return;
       try{
-        const data = JSON.parse(raw);
-        fields.forEach(id => {
-          if(data[id] !== undefined) document.getElementById(id).value = data[id];
-        });
-      }catch(e){}
+        await navigator.clipboard.writeText(text);
+        adOut.style.borderColor = 'rgba(34,197,94,.7)';
+        setTimeout(()=> adOut.style.borderColor = 'var(--stroke)', 650);
+      }catch{}
+    });
+
+    // calcolo iniziale
+    calcPrice();
+
+    // PWA: registra service worker se presente
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(()=>{});
+      });
     }
-
-    // ------- Eventi
-    $('#calcola').addEventListener('click', calcolaPrezzo);
-    $('#genera').addEventListener('click', ()=>{
-      const x = generaAnnuncio();
-      lastPieces = x; // per i bottoni di copia singola
-    });
-    $('#reset').addEventListener('click', ()=>{
-      fields.forEach(id => document.getElementById(id).value = id==='margine' ? 30 : (id==='fee'?0:''));
-      $('#annuncioOut').value = '';
-      $('#prezzoOut').textContent = '—';
-      $('#recap').textContent = 'Costi totali €0 — Margine 0%';
-      localStorage.removeItem('fh_draft');
-      lastPieces = {titolo:'', descr:''};
-    });
-    document.querySelector('[data-copy="#prezzoOut"]').addEventListener('click', ()=> copiaSelettore('#prezzoOut'));
-    $('#copyAnnuncio').addEventListener('click', ()=> copiaSelettore('#annuncioOut'));
-
-    let lastPieces = {titolo:'', descr:''};
-    $('#copyTitolo').addEventListener('click', ()=>{
-      if(!lastPieces.titolo) lastPieces = generaAnnuncio();
-      copiaTesto(lastPieces.titolo);
-    });
-    $('#copyDescr').addEventListener('click', ()=>{
-      if(!lastPieces.descr) lastPieces = generaAnnuncio();
-      copiaTesto(lastPieces.descr);
-    });
-    $('#shareAnnuncio').addEventListener('click', ()=>{
-      const text = ($('#annuncioOut').value || '').trim() || (generaAnnuncio(), $('#annuncioOut').value);
-      if (navigator.share) navigator.share({text}).catch(()=>{});
-      else copiaTesto(text);
-    });
-
-    // autosave
-    document.querySelectorAll('input,select,textarea').forEach(i=> i.addEventListener('input', salvaDraft));
-    caricaDraft();
-    calcolaPrezzo();
-  </script>
-  <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js');
-    });
-  }
   </script>
 </body>
 </html>
